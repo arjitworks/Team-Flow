@@ -173,6 +173,58 @@ npm run dev
 - Backend API: `http://localhost:5000/api` (or your backend `PORT`)
 - Health check: `GET http://localhost:5000/api/health`
 
+## Deploy on Railway
+
+This repo is configured for Railway with per-service config files:
+- `backend/railway.toml`
+- `frontend/railway.toml`
+
+### 1) Install and login Railway CLI
+
+```bash
+npm install -g @railway/cli
+railway login
+```
+
+### 2) Deploy Backend service
+
+```bash
+cd backend
+railway init
+railway up
+```
+
+Set backend Railway variables:
+- `DATABASE_URL` (Railway Postgres connection string)
+- `JWT_SECRET`
+- `JWT_EXPIRES_IN=7d`
+- `CLIENT_URL` (your frontend Railway domain)
+- `NODE_ENV=production`
+
+Backend runs with:
+- `postinstall`: `prisma generate`
+- `prestart`: `prisma migrate deploy`
+- `start`: `node src/server.js`
+
+### 3) Deploy Frontend service
+
+```bash
+cd ../frontend
+railway init
+railway up
+```
+
+Set frontend Railway variable:
+- `VITE_API_URL=https://<your-backend-domain>/api`
+
+Frontend build/start:
+- Build: `npm run build`
+- Start: `npm start` (serves `dist` on Railway `PORT`)
+
+### 4) Update CORS for production
+
+After frontend deploy, copy its Railway URL and set backend `CLIENT_URL` to that value, then redeploy backend.
+
 ## Frontend Routes
 
 - `/` - Landing page

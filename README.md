@@ -261,4 +261,5 @@ Detailed API request/response details are in `backend/API.md`.
 - **Prisma connection errors:** verify PostgreSQL is running and `DATABASE_URL` is correct
 - **CORS issues:** ensure `CLIENT_URL` in backend matches frontend host/port
 
+Live-Preview : https://dazzling-caring-production.up.railway.app/
 
